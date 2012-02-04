@@ -76,9 +76,9 @@ class window.Componant
       @delta = 0
 
     #right
-    if @x > 800 - 40
+    if @x > 900 - @width
       @deltaX = @deltaX * @delta
-      @x = 800 - 40
+      @x = 900 - @width
       @v = 0
 
     #left
@@ -88,9 +88,9 @@ class window.Componant
       @v = 0
 
     #bottom
-    if @y > 500 - 140
+    if @y > 500 - @height
       @deltaY = @deltaY * @delta
-      @y = 500 - 140
+      @y = 500 - @height
       @v = 0
 
     #top
