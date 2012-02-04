@@ -1,13 +1,12 @@
 window.Resources =
-  sprites: []
-  css: []
-  files: []
-  sounds: []
-  callbacks: []
+  sprites: ->
+    Sprite.all
   ready: (callback) ->
+    sprites = Sprite.all
     count = 0
+    expected = Object.keys(sprites).length
     $('html').bind 'imageload', =>
       count += 1
-      callback() if count is 3
+      callback() if count is expected
 
-    Sprite.all[sprite].preload() for sprite of Sprite.all
+    sprites[key].preload() for key of sprites
