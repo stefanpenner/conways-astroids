@@ -3,8 +3,8 @@ class window.Componant
     @sprite = @sprite
     @x = @options.x || 0
     @y = @options.y || 0
-    @r = 0
     @v = @options.v || 0
+    @r = @options.r || 0
 
     @dx = @options.dx || 0
     @dy = @options.dy || 0
