@@ -19,7 +19,7 @@ class window.Sprite
 Sprite.all = {}
 
 class window.Componant
-  constructor: (@name,@options)
+  constructor: (@name, @options) ->
     @sprite = @options.sprite
     @x = @options.x
     @y = @options.y
