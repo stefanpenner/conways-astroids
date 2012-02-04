@@ -1,6 +1,6 @@
 desc 'compile all coffee files in the root directory to the output directory and continue to watch'
 task :compile do
-  system %(coffee -o output -cw *.coffee)
+  system %(coffee -o output -cw src/*.coffee)
 end
 
 task :default => :compile
