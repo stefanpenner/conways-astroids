@@ -39,7 +39,6 @@ class window.Sprite
       ctx.restore()
     else
       ctx.drawImage(@image[0], @x, @y, @width, @height)
-
     @
 
 Sprite.all = {}
@@ -121,6 +120,7 @@ class window.Componant
       @y = 0
       @v = 0
 
+    console.log(@y,@x,@v,@) if @name is "mark"
     @sprite.
       place(@x,@y).
       rotate(@r).
@@ -135,31 +135,26 @@ class window.Componant
 
 Componant.all = {}
 
-class window.Gameboard
+class window.Graphics
   constructor: (@canvas) ->
     @ctx = @canvas.getContext('2d')
-    @space      = Sprite.all.space
-    @mark       = Componant.all.mark
-    @asteroid   = Componant.all.asteroid
-    @asteroid2  = Componant.all.asteroid2
-
+    @ordered = [
+      Sprite.all.space
+      Componant.all.mark
+      Componant.all.asteroid
+      Componant.all.asteroid2
+    ]
   clear: -> @ctx.clearRect(0,0,900,500)
 
   draw: ->
     @clear()
-    # stuffToDraw.forEach (component) ->
-    #   component.draw(ctx)
-    @space.draw(@ctx)
-    @mark.draw(@ctx)
-    @asteroid.draw(@ctx)
-    @asteroid2.draw(@ctx)
-
+    comp.draw(@ctx) for comp in @ordered
     @
 
   run: ->
     parent = arguments.callee
     webkitRequestAnimationFrame ->
-      game.draw()
+      graphics.draw()
       parent()
 
 $ ->
@@ -198,20 +193,21 @@ $ ->
   Player.current = new Player("stefan")
 
   canvas = $('#game')[0]
-  window.game = new Gameboard(canvas, { x:0,y:0 } )
+  window.graphics = new Graphics(canvas, { x:0,y:0 } )
 
   count = 0
 
   $('html').bind 'imageload', =>
     count += 1
-    game.run() if count == 2
+    graphics.run() if count == 2
 
   Sprite.all[sprite].preload() for sprite of Sprite.all
 
   $(document).bind 'keyup keydown', (e) ->
+    e.preventDefault()
     code = e.keyCode
     Player.current.h = (code is 37) # left
     Player.current.j = (code is 38) # up
     Player.current.l = (code is 39) # right
     Player.current.k = (code is 40) # down
-    window.game.mark.respondToInput(Player.current)
+    Componant.all.mark.respondToInput(Player.current)
