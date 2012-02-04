@@ -1,29 +1,54 @@
 class window.Sprite
-  constructor: (@name,@src) ->
+  constructor: (@name,@src,@options={}) ->
     @image = $(new Image())
     @loaded = false
+    @x = @options.x || 0
+    @y = @options.y || 0
     Sprite.all[@name] = @
 
   preload: ->
     @image.load( =>
       image = @image[0]
-      @height = image.height
-      @width  = image.width
+      @height = @options.height || image.height
+      @width  = @options.width  || image.width
       $('html').trigger('imageload', @name)
+      @loaded = true
     ).attr('src',@src)
 
-  draw: (ctx,x=0,y=0,height=@height,width=@width,r) ->
-    pivotX = x + (width/2)
-    pivotY = y + (height/2)
-    ctx.save()
-    ctx.translate(pivotX, pivotY)
-    ctx.rotate((r)*3.14)
-    ctx.drawImage(@image[0], -(width/2), -(height/2), width, height)
-    ctx.translate(-pivotX, -pivotY)
-    ctx.restore()
+  place:(@x=0,@y=0) ->
+    @
+
+  rotate: (r) ->
+    @r = r
+    @
+
+  resize: (height=@height,width=@width) ->
+    @height=height
+    @width=width
+    @
+
+  draw: (ctx) ->
+    if @r
+      pivotX = @x + (@width/2)
+      pivotY = @y + (@height/2)
+      ctx.save()
+      ctx.translate(pivotX, pivotY)
+      ctx.rotate((@r)*3.14)
+      ctx.drawImage(@image[0], -(@width/2), -(@height/2), @width, @height)
+      ctx.translate(-pivotX, -pivotY)
+      ctx.restore()
+    else
+      ctx.drawImage(@image[0], @x, @y, @width, @height)
+
     @
 
 Sprite.all = {}
+window.ResourceManager =
+  sprites: [],
+  css: [],
+  files: [],
+  sounds: [],
+  callbacks: []
 
 class window.Player
   constructor: (@name) ->
@@ -37,11 +62,8 @@ class window.Componant
     @r = 0
     @v = @options.v || 0
 
-    @height = @options.height || @sprite.height
-    @width  = @options.width  || @sprite.width
-
-    @deltaX = @options.deltaX || 0
-    @deltaY = @options.deltaY || 0
+    @dx = @options.dx || 0
+    @dy = @options.dy || 0
 
     Componant.all[@name] = @
 
@@ -55,22 +77,20 @@ class window.Componant
       @r +=  0.02 if @user.l
 
     else
-      @deltaX += -0.4 if @user.h
-      @deltaY += -0.4 if @user.j
-      @deltaY +=  0.4 if @user.k
-      @deltaX +=  0.4 if @user.l
+      @dx += -0.4 if @user.h
+      @dy += -0.4 if @user.j
+      @dy +=  0.4 if @user.k
+      @dx +=  0.4 if @user.l
 
     @user.hasResponsedToInput()
 
   draw: (@ctx) ->
-    @height = @height || @sprite.height
-    @width  = @height || @sprite.width
     if @options.radial
       @x += @v * Math.cos((@r+(1/2))*3.14)
       @y += @v * Math.sin((@r+(1/2))*3.14)
     else
-      @x += @deltaX
-      @y += @deltaY
+      @x += @dx
+      @y += @dy
 
     if @options.bounce
       @delta = -1
@@ -79,36 +99,46 @@ class window.Componant
 
     #right
     if @x > 900 - @width
-      @deltaX = @deltaX * @delta
+      @dx = @dx * @delta
       @x = 900 - @width
       @v = 0
 
     #left
     if @x < 0
-      @deltaX = @deltaX * @delta
+      @dx = @dx * @delta
       @x = 0
       @v = 0
 
     #bottom
     if @y > 500 - @height
-      @deltaY = @deltaY * @delta
+      @dy = @dy * @delta
       @y = 500 - @height
       @v = 0
 
     #top
     if @y < 0
-      @deltaY = @deltaY * @delta
+      @dy = @dy * @delta
       @y = 0
       @v = 0
 
-    @sprite.draw(@ctx,@x,@y,@height,@width,@r)
+    @sprite.
+      place(@x,@y).
+      rotate(@r).
+        draw(@ctx)
+    @
+
+  rotate: (r) ->
+    @r = r
+    @
+
+  resize: (@height,@width) ->
 
 Componant.all = {}
 
 class window.Gameboard
   constructor: (@canvas) ->
     @ctx = @canvas.getContext('2d')
-    @background = Sprite.all.space
+    @space      = Sprite.all.space
     @mark       = Componant.all.mark
     @asteroid   = Componant.all.asteroid
     @asteroid2  = Componant.all.asteroid2
@@ -119,7 +149,7 @@ class window.Gameboard
     @clear()
     # stuffToDraw.forEach (component) ->
     #   component.draw(ctx)
-    @background.draw(@ctx)
+    @space.draw(@ctx)
     @mark.draw(@ctx)
     @asteroid.draw(@ctx)
     @asteroid2.draw(@ctx)
@@ -133,23 +163,28 @@ class window.Gameboard
       parent()
 
 $ ->
-  space = new Sprite('space','assets/space.jpg')
-  asteroidSprite = new Sprite('asteroid','assets/asteroid.png')
+  space = new Sprite('space','assets/space.jpg',
+    height: 500
+    width: 900
+  )
+
+  asteroidSprite = new Sprite('asteroid','assets/asteroid.png',
+    height: 42.8
+    width: 37
+  )
 
   new Componant('asteroid',asteroidSprite,
     height: 42.8
     width: 37
     bounce: true
-    deltaX: 5
-    deltaY: 5
+    dx: 5
+    dy: 5
   )
 
   new Componant('asteroid2',asteroidSprite,
-    height: 42.8
-    width: 37
     bounce: true
-    deltaX: 3
-    deltaY: 2
+    dx: 3
+    dy: 2
     x: 500
     y: 300
   )
@@ -175,8 +210,8 @@ $ ->
 
   $(document).bind 'keyup keydown', (e) ->
     code = e.keyCode
-    Player.current.h = (code == 37) # left
-    Player.current.j = (code == 38) # up
-    Player.current.l = (code == 39) # right
-    Player.current.k = (code == 40) # down
+    Player.current.h = (code is 37) # left
+    Player.current.j = (code is 38) # up
+    Player.current.l = (code is 39) # right
+    Player.current.k = (code is 40) # down
     window.game.mark.respondToInput(Player.current)
