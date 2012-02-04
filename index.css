@@ -7,8 +7,9 @@ canvas {
   border-radius: 11px;
   diplay: block;
   width: 800px;
-  margin: 2em auto;
-  position:absolute;
-  top:125px;
-  left:320px;
+  margin: 5em auto;
+}
+#wrapper{
+  margin:20px auto;
+  width:800px
 }
