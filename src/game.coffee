@@ -9,7 +9,7 @@ $ ->
     width: 37
   )
 
-  new Componant('asteroid',asteroidSprite,
+  new Componant('asteroid', asteroidSprite,
     height: 42.8
     width: 37
     bounce: true
