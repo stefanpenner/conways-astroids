@@ -11,26 +11,30 @@ class window.Componant
 
     Componant.all[@name] = @
 
-  respondToInput: (@user) ->
+  respondToInput: (input) ->
 
     if @options.radial
-      @v += -0.4 if @user.j
-      @v +=  0.4 if @user.k
+      @v += -0.4 if input.j
+      @v +=  0.4 if input.k
 
-      @r += -0.02 if @user.h
-      @r +=  0.02 if @user.l
+      @r += -0.02 if input.h
+      @r +=  0.02 if input.l
 
     else
-      @dx += -0.4 if @user.h
-      @dy += -0.4 if @user.j
-      @dy +=  0.4 if @user.k
-      @dx +=  0.4 if @user.l
+      @dx += -0.4 if input.h
+      @dy += -0.4 if input.j
+      @dy +=  0.4 if input.k
+      @dx +=  0.4 if input.l
 
     @user.hasResponsedToInput()
 
-  draw: (@ctx) ->
-    height = @sprite.height
-    width = @sprite.width
+  height: -> @sprite.height
+  width:  -> @sprite.width
+
+  tick: ->
+    height = @height()
+    width  = @width()
+
     if @options.bounce
       @delta = -1
     else
@@ -67,6 +71,9 @@ class window.Componant
       @y = 0
       @v = 0
 
+
+  draw: (@ctx) ->
+    @tick()
     @sprite.
       place(@x,@y).
       rotate(@r).
