@@ -6,6 +6,7 @@ class window.Graphics
       Componant.all.mark
       Componant.all.asteroid
       Componant.all.asteroid2
+      Componant.all.missile
     ]
   clear: -> @ctx.clearRect(0,0,900,500)
 

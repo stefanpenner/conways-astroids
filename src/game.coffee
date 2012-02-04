@@ -4,14 +4,23 @@ $ ->
     width: 900
   )
 
+  missile = new Sprite('missile','assets/missile.png')
+
   asteroidSprite = new Sprite('asteroid','assets/asteroid.png',
     height: 42.8
     width: 37
   )
 
+  new Componant('missile', missile,
+    dx: 10
+    dy: 5
+    x: 500
+    bounce: true
+    height: 10
+    width:  10
+  )
+
   new Componant('asteroid', asteroidSprite,
-    height: 42.8
-    width: 37
     bounce: true
     dx: 5
     dy: 5
