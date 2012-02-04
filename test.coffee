@@ -37,8 +37,8 @@ class window.Componant
     @r = 0
     @v = @options.v || 0
 
-    @height = @options.height
-    @width  = @options.width
+    @height = @options.height || @sprite.height
+    @width  = @options.width  || @sprite.width
 
     @deltaX = @options.deltaX || 0
     @deltaY = @options.deltaY || 0
@@ -63,6 +63,8 @@ class window.Componant
     @user.hasResponsedToInput()
 
   draw: (@ctx) ->
+    @height = @height || @sprite.height
+    @width  = @height || @sprite.width
     if @options.radial
       @x += @v * Math.cos((@r+(1/2))*3.14)
       @y += @v * Math.sin((@r+(1/2))*3.14)
@@ -99,7 +101,7 @@ class window.Componant
       @y = 0
       @v = 0
 
-    @sprite.draw(@ctx,@x,@y,@height,@height,@r)
+    @sprite.draw(@ctx,@x,@y,@height,@width,@r)
 
 Componant.all = {}
 
