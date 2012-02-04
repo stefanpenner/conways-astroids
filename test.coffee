@@ -13,16 +13,19 @@ class window.Sprite
     ).attr('src',@src)
 
   draw: (ctx,x,y,height,width) ->
-    ctx.drawImage(@image[0],x,y,width || @width, height || @height)
+    ctx.drawImage(@image[0],x||0,y || 0 ,width || @width, height || @height)
     @
 
 Sprite.all = {}
 
 class window.Componant
-  constructor: (@name, @options) ->
-    @sprite = @options.sprite
+  constructor: (@name,@sprite,@options) ->
+    @sprite = @sprite
     @x = @options.x
     @y = @options.y
+
+  draw: (@ctx) ->
+    @sprite.draw(@ctx,0,0)
 
 class window.Gameboard
   constructor: (@canvas) ->
