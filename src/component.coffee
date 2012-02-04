@@ -73,7 +73,6 @@ class window.Componant
 
 
   draw: (@ctx) ->
-    @tick()
     @sprite.
       place(@x,@y).
       rotate(@r).

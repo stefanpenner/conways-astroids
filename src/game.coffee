@@ -35,6 +35,7 @@ $ ->
 
   canvas = $('#game')[0]
   window.graphics = new Graphics(canvas, { x:0,y:0 } )
+  window.logic    = Logic
 
   window.controller =
     run: ->
@@ -47,9 +48,8 @@ $ ->
         Player.current.k = (code is 40) # down
         Componant.all.mark.respondToInput(Player.current)
 
-
-
   Resources.ready ->
+    logic.run()
     graphics.run()
     controller.run()
 
