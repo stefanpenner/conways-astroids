@@ -1,3 +1,3 @@
 class window.Player
   constructor: (@name) ->
-  hasResponsedToInput: -> @h = @j = @k = @l = null
+  reset: -> @h = @j = @k = @l = null

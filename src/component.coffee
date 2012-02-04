@@ -26,7 +26,7 @@ class window.Componant
       @dy +=  0.4 if input.k
       @dx +=  0.4 if input.l
 
-    @user.hasResponsedToInput()
+    input.reset()
 
   height: -> @sprite.height
   width:  -> @sprite.width
