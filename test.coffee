@@ -13,17 +13,24 @@ class window.Sprite
     ).attr('src',@src)
 
   draw: (ctx,x,y,height,width) ->
-    ctx.drawImage(@image[0],x,y,height || @height, width || @width)
+    ctx.drawImage(@image[0],x,y,width || @width, height || @height)
     @
 
 Sprite.all = {}
+
+class window.Componant
+  constructor: (@name,@options)
+    @sprite = @options.sprite
+    @x = @options.x
+    @y = @options.y
+
 class window.Gameboard
   constructor: (@canvas) ->
     @ctx = @canvas.getContext('2d')
-    @background = Sprite.all.background
+    @background = Sprite.all.space
     @mark       = Sprite.all.mark
 
-  clear: -> @ctx.clearRect(0,0,800,500)
+  clear: -> @ctx.clearRect(0,0,900,500)
 
   draw: ->
     @clear()
@@ -39,7 +46,7 @@ class window.Gameboard
       parent()
 
 $ ->
-  new Sprite('background','assets/bg.jpg')
+  new Sprite('space','assets/space.jpg')
   new Sprite('mark','assets/mark.jpg')
 
   canvas = $('#game')[0]
