@@ -1,0 +1,11 @@
+html{
+  background: url('assets/png.png');
+}
+canvas {
+  background: black;
+  box-shadow: 0px 0px 0px #000;
+  border-radius: 11px;
+  diplay: block;
+  width: 800px;
+  margin: 2em auto;
+}
