@@ -50,7 +50,7 @@ $ ->
 
 
   Resources.ready ->
-    logic.run()
+    graphics.run()
     controller.run()
 
 
