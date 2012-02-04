@@ -1,13 +1,16 @@
+desc 'compile all coffee files in the root directory to the output directory and continue to watch'
 task :compile do
-  exec("coffee -o output -cw *.coffee")
+  system %(coffee -o output -cw *.coffee)
 end
 
 task :default => :compile
 
+desc 'install coffee-script with brew (Mac OS X)'
 task :setup do
   system "brew install coffee-script"
 end
 
+desc 'clean out the output directory'
 task :clean do
   rm_rf "output"
 end
