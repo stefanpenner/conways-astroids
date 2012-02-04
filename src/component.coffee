@@ -28,8 +28,8 @@ class window.Componant
 
     input.reset()
 
-  height: -> @sprite.height
-  width:  -> @sprite.width
+  height: -> @options.height || @sprite.height
+  width:  -> @options.width  || @sprite.width
 
   tick: ->
     height = @height()
@@ -76,6 +76,7 @@ class window.Componant
     @sprite.
       place(@x,@y).
       rotate(@r).
+      resize(@height(),@width()).
         draw(@ctx)
     @
 
