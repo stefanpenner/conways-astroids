@@ -12,25 +12,33 @@ class window.Sprite
       $('html').trigger('imageload', @name)
     ).attr('src',@src)
 
-  draw: (ctx,x,y,height,width) ->
-    ctx.drawImage(@image[0], x || 0, y || 0 ,width || @width, height || @height)
+  draw: (ctx,x=0,y=0,height=@height,width=@width,r) ->
+    pivotX = x + (width/2)
+    pivotY = y + (height/2)
+    ctx.save()
+    ctx.translate(pivotX, pivotY)
+    ctx.rotate((r)*3.14)
+    ctx.drawImage(@image[0], -(width/2), -(height/2), width, height)
+    ctx.translate(-pivotX, -pivotY)
+    ctx.restore()
     @
 
 Sprite.all = {}
 
 class window.Player
   constructor: (@name) ->
-    @name = "name"
-    @h = false
-    @j = false
-    @k = false
-    @l = false
+  hasResponsedToInput: -> @h = @j = @k = @l = null
 
 class window.Componant
   constructor: (@name,@sprite,@options={}) ->
     @sprite = @sprite
     @x = @options.x || 0
     @y = @options.y || 0
+    @r = 0
+    @v = @options.v || 0
+
+    @height = @options.height
+    @width  = @options.width
 
     @deltaX = @options.deltaX || 0
     @deltaY = @options.deltaY || 0
@@ -38,46 +46,60 @@ class window.Componant
     Componant.all[@name] = @
 
   respondToInput: (@user) ->
-    console.log("respondToInput called")
-    if @user.h == true
-      @deltaX += -0.2
-      @user.h = false
-    if @user.j == true
-      @deltaY += -0.2
-      @user.j = false
-    if @user.k == true
-      @deltaY +=  0.2
-      @user.k = false
-    if @user.l == true
-      @deltaX +=  0.2
-      @user.l = false
+
+    if @options.radial
+      @v += -0.4 if @user.j
+      @v +=  0.4 if @user.k
+
+      @r += -0.02 if @user.h
+      @r +=  0.02 if @user.l
+
+    else
+      @deltaX += -0.4 if @user.h
+      @deltaY += -0.4 if @user.j
+      @deltaY +=  0.4 if @user.k
+      @deltaX +=  0.4 if @user.l
+
+    @user.hasResponsedToInput()
 
   draw: (@ctx) ->
-    @x += @deltaX
-    @y += @deltaY
+    if @options.radial
+      @x += @v * Math.cos((@r+(1/2))*3.14)
+      @y += @v * Math.sin((@r+(1/2))*3.14)
+    else
+      @x += @deltaX
+      @y += @deltaY
 
     if @options.bounce
       @delta = -1
     else
       @delta = 0
 
+    #right
     if @x > 800 - 40
       @deltaX = @deltaX * @delta
       @x = 800 - 40
+      @v = 0
 
+    #left
     if @x < 0
       @deltaX = @deltaX * @delta
       @x = 0
+      @v = 0
 
+    #bottom
     if @y > 500 - 140
       @deltaY = @deltaY * @delta
       @y = 500 - 140
+      @v = 0
 
+    #top
     if @y < 0
       @deltaY = @deltaY * @delta
       @y = 0
+      @v = 0
 
-    @sprite.draw(@ctx,@x,@y)
+    @sprite.draw(@ctx,@x,@y,@height,@height,@r)
 
 Componant.all = {}
 
@@ -86,13 +108,20 @@ class window.Gameboard
     @ctx = @canvas.getContext('2d')
     @background = Sprite.all.space
     @mark       = Componant.all.mark
+    @asteroid   = Componant.all.asteroid
+    @asteroid2  = Componant.all.asteroid2
 
   clear: -> @ctx.clearRect(0,0,900,500)
 
   draw: ->
     @clear()
-    @background.draw(@ctx,0,0)
-    @mark.draw(@ctx,0,0)
+    # stuffToDraw.forEach (component) ->
+    #   component.draw(ctx)
+    @background.draw(@ctx)
+    @mark.draw(@ctx)
+    @asteroid.draw(@ctx)
+    @asteroid2.draw(@ctx)
+
     @
 
   run: ->
@@ -103,11 +132,30 @@ class window.Gameboard
 
 $ ->
   space = new Sprite('space','assets/space.jpg')
-  new Componant('mark',new Sprite('mark','assets/mark.jpg'),
-    velocityX: 2
-    velocityY: 3
-    bounce: false
+  asteroidSprite = new Sprite('asteroid','assets/asteroid.png')
 
+  new Componant('asteroid',asteroidSprite,
+    height: 42.8
+    width: 37
+    bounce: true
+    deltaX: 5
+    deltaY: 5
+  )
+
+  new Componant('asteroid2',asteroidSprite,
+    height: 42.8
+    width: 37
+    bounce: true
+    deltaX: 3
+    deltaY: 2
+    x: 500
+    y: 300
+  )
+
+  new Componant('mark',new Sprite('mark','assets/mark.jpg'),
+    x: 100
+    y: 100
+    radial: true
   )
 
   Player.current = new Player("stefan")
@@ -125,7 +173,6 @@ $ ->
 
   $(document).bind 'keyup keydown', (e) ->
     code = e.keyCode
-    console.log(e,code)
     Player.current.h = (code == 37) # left
     Player.current.j = (code == 38) # up
     Player.current.l = (code == 39) # right
