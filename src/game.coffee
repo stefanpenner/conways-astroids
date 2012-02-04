@@ -36,19 +36,21 @@ $ ->
   canvas = $('#game')[0]
   window.graphics = new Graphics(canvas, { x:0,y:0 } )
 
-  count = 0
+  window.controller =
+    run: ->
+      $(document).bind 'keyup keydown', (e) ->
+        e.preventDefault()
+        code = e.keyCode
+        Player.current.h = (code is 37) # left
+        Player.current.j = (code is 38) # up
+        Player.current.l = (code is 39) # right
+        Player.current.k = (code is 40) # down
+        Componant.all.mark.respondToInput(Player.current)
 
-  $('html').bind 'imageload', =>
-    count += 1
-    graphics.run() if count == 2
 
-  Sprite.all[sprite].preload() for sprite of Sprite.all
 
-  $(document).bind 'keyup keydown', (e) ->
-    e.preventDefault()
-    code = e.keyCode
-    Player.current.h = (code is 37) # left
-    Player.current.j = (code is 38) # up
-    Player.current.l = (code is 39) # right
-    Player.current.k = (code is 40) # down
-    Componant.all.mark.respondToInput(Player.current)
+  Resources.ready ->
+    logic.run()
+    controller.run()
+
+
