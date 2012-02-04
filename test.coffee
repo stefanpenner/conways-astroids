@@ -38,10 +38,19 @@ class window.Componant
     Componant.all[@name] = @
 
   respondToInput: (@user) ->
-    @deltaX += -0.2 if @user.h
-    @deltaY += -0.2 if @user.j
-    @deltaY +=  0.2 if @user.k
-    @deltaX +=  0.2 if @user.l
+    console.log("respondToInput called")
+    if @user.h == true
+      @deltaX += -0.2
+      @user.h = false
+    if @user.j == true
+      @deltaY += -0.2
+      @user.j = false
+    if @user.k == true
+      @deltaY +=  0.2
+      @user.k = false
+    if @user.l == true
+      @deltaX +=  0.2
+      @user.l = false
 
   draw: (@ctx) ->
     @x += @deltaX
@@ -82,7 +91,6 @@ class window.Gameboard
 
   draw: ->
     @clear()
-    @mark.respondToInput(Player.current)
     @background.draw(@ctx,0,0)
     @mark.draw(@ctx,0,0)
     @
@@ -99,6 +107,7 @@ $ ->
     velocityX: 2
     velocityY: 3
     bounce: false
+
   )
 
   Player.current = new Player("stefan")
@@ -117,7 +126,8 @@ $ ->
   $(document).bind 'keyup keydown', (e) ->
     code = e.keyCode
     console.log(e,code)
-    Player.current.h = code is 37 # left
-    Player.current.j = code is 38 # up
-    Player.current.l = code is 39 # right
-    Player.current.k = code is 40 # down
+    Player.current.h = (code == 37) # left
+    Player.current.j = (code == 38) # up
+    Player.current.l = (code == 39) # right
+    Player.current.k = (code == 40) # down
+    window.game.mark.respondToInput(Player.current)
