@@ -17,9 +17,6 @@ class window.Sprite
     @
 
 Sprite.all = {}
-class window.Component
-  constructor: (x,y,sprite) ->
-
 class window.Gameboard
   constructor: (@canvas) ->
     @ctx = @canvas.getContext('2d')
@@ -32,11 +29,14 @@ class window.Gameboard
     @clear()
     @background.draw(@ctx,0,0)
     @mark.draw(@ctx,0,0)
+    console.log('draw')
     @
 
-  draw2: ->
-    @clear()
-    @mark.draw(@ctx,10,10)
+  run: ->
+    parent = arguments.callee
+    webkitRequestAnimationFrame ->
+      game.draw()
+      parent()
 
 $ ->
   new Sprite('background','assets/bg.jpg')
@@ -49,7 +49,7 @@ $ ->
 
   $('html').bind 'imageload', =>
     count += 1
-    game.draw() if count == 2
+    game.run() if count == 2
 
   Sprite.all[sprite].preload() for sprite of Sprite.all
 
