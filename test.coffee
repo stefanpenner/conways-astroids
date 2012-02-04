@@ -84,6 +84,13 @@ class window.Componant
     @user.hasResponsedToInput()
 
   draw: (@ctx) ->
+    height = @sprite.height
+    width = @sprite.width
+    if @options.bounce
+      @delta = -1
+    else
+      @delta = 0
+
     if @options.radial
       @x += @v * Math.cos((@r+(1/2))*3.14)
       @y += @v * Math.sin((@r+(1/2))*3.14)
@@ -91,15 +98,10 @@ class window.Componant
       @x += @dx
       @y += @dy
 
-    if @options.bounce
-      @delta = -1
-    else
-      @delta = 0
-
     #right
-    if @x > 900 - @width
+    if @x > 900 - width
       @dx = @dx * @delta
-      @x = 900 - @width
+      @x = 900 - width
       @v = 0
 
     #left
@@ -109,9 +111,9 @@ class window.Componant
       @v = 0
 
     #bottom
-    if @y > 500 - @height
+    if @y > 500 - height
       @dy = @dy * @delta
-      @y = 500 - @height
+      @y = 500 - height
       @v = 0
 
     #top
@@ -120,7 +122,6 @@ class window.Componant
       @y = 0
       @v = 0
 
-    console.log(@y,@x,@v,@) if @name is "mark"
     @sprite.
       place(@x,@y).
       rotate(@r).
