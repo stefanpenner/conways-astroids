@@ -12,4 +12,9 @@ canvas {
   top:125px;
   left:320px;
   padding: 0;
+  margin: 5em auto;
+}
+#wrapper{
+  margin:20px auto;
+  width:800px
 }
