@@ -12,6 +12,7 @@ class window.Graphics
 
   run: ->
     parent = arguments.callee
+
     webkitRequestAnimationFrame ->
       graphics.draw()
       parent()

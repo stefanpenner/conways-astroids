@@ -1,10 +1,6 @@
 class Asteroid extends Component
-  constructor: ->
-    super(Asteroid.sprite,
-      bounce: true
-      dx: 5
-      dy: 5
-    )
+  constructor: (@options={})->
+    super(Asteroid.sprite,@options)
 
 Asteroid.sprite = new Sprite('asteroid','assets/asteroid.png',
   height: 42.8
