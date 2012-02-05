@@ -1,5 +1,5 @@
-class window.Componant
-  constructor: (@name,@sprite,@options={}) ->
+class window.Component
+  constructor: (@sprite,@options={}) ->
     @sprite = @sprite
     @x = @options.x || 0
     @y = @options.y || 0
@@ -9,7 +9,7 @@ class window.Componant
     @dx = @options.dx || 0
     @dy = @options.dy || 0
 
-    Componant.all[@name] = @
+    Component.all.push @
 
   respondToInput: (input) ->
 
@@ -25,6 +25,13 @@ class window.Componant
       @dy += -0.4 if input.j
       @dy +=  0.4 if input.k
       @dx +=  0.4 if input.l
+
+    if input.space
+      # shoot missle
+      missile = new Missile()
+      missile.move(@x,@y).rotate(@r-1).v=5
+
+      graphics.ordered.push(missile)
 
     input.reset()
 
@@ -80,10 +87,8 @@ class window.Componant
         draw(@ctx)
     @
 
-  rotate: (r) ->
-    @r = r
-    @
-
+  rotate: (@r) -> @
+  move: (@x,@y) -> @
   resize: (@height,@width) ->
 
-Componant.all = {}
+Component.all = []
