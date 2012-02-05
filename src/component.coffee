@@ -14,17 +14,17 @@ class window.Component
   respondToInput: (input) ->
 
     if @options.radial
-      @v += -0.4 if input.j
-      @v +=  0.4 if input.k
+      @v += -0.4 if input.up
+      @v +=  0.4 if input.down
 
-      @r += -0.02 if input.h
-      @r +=  0.02 if input.l
+      @r += -0.02 if input.left
+      @r +=  0.02 if input.right
 
     else
-      @dx += -0.4 if input.h
-      @dy += -0.4 if input.j
-      @dy +=  0.4 if input.k
-      @dx +=  0.4 if input.l
+      @dx += -0.4 if input.left
+      @dy += -0.4 if input.down
+      @dy +=  0.4 if input.up
+      @dx +=  0.4 if input.right
 
     if input.space
       # shoot missle

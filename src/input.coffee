@@ -1,12 +1,24 @@
 window.Input =
-  run: ->
-    $(document).bind 'keyup keydown', (e) ->
-      e.preventDefault()
-      code = e.keyCode
-      Player.current.h = (code is 37) # left
-      Player.current.j = (code is 38) # up
-      Player.current.l = (code is 39) # right
-      Player.current.k = (code is 40) # down
-      Player.current.space = (code is 32) # space
-      Component.all.mark.respondToInput(Player.current)
+  state:
+    reset: ->
+      Input.state =
+        reset: arguments.callee
 
+  humanize:
+    32: 'space'
+    37: 'left'
+    38: 'up'
+    39: 'right'
+    40: 'down'
+
+  run: ->
+    $(document).bind 'keyup', (e) ->
+      code = Input.humanize[e.keyCode]
+      Input.state[code] = false
+
+      Component.all.mark.respondToInput(Input.state)
+
+    $(document).bind 'keydown', (e) ->
+      code = Input.humanize[e.keyCode]
+      Input.state[code] = true
+      Component.all.mark.respondToInput(Input.state)
