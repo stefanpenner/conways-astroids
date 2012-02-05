@@ -12,7 +12,6 @@ $ ->
 
   canvas = $('#game')[0]
   window.graphics = new Graphics(canvas, { x:0,y:0 } )
-  window.logic    = Logic
 
   Component.all.mark = new Ship()
 
@@ -38,6 +37,6 @@ $ ->
         Component.all.mark.respondToInput(Player.current)
 
   Resources.ready ->
-    logic.run()
+    Runtime.run()
     graphics.run()
     controller.run()

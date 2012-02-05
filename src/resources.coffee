@@ -1,6 +1,7 @@
 window.Resources =
   sprites: ->
     Sprite.all
+
   ready: (callback) ->
     sprites = Sprite.all
     count = 0
