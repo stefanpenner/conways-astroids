@@ -4,9 +4,8 @@ $ ->
     width: 900
   )
 
-
-  window.Missile = Missile
   window.Ship = Ship
+  window.Missile = Missile
   window.Asteroid = Asteroid
 
   Player.current = new Player("stefan")
