@@ -13,13 +13,13 @@ window.Input =
     82: 'r'
 
   run: ->
-    $(document.body).keyup (e) ->
+    $(document).keyup (e) ->
       code = Input.humanize[e.keyCode]
       Input.state[code] = false
       e.preventDefault()
       return false
 
-    $(document.body).keydown (e) ->
+    $(document).keydown (e) ->
       code = Input.humanize[e.keyCode]
       Input.state[code] = true
       e.preventDefault()
