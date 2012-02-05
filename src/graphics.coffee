@@ -7,7 +7,7 @@ class window.Graphics
 
   draw: ->
     @clear()
-    comp.draw(@ctx) for comp in @ordered.filter((i) -> i);
+    comp.draw(@ctx) for comp in @ordered.filter((i) -> i)
     @
 
   run: ->
