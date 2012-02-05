@@ -117,7 +117,6 @@ class window.Component
   move: (@x,@y) -> @
   resize: (@height,@width) ->
   stop: ->
-    @v = 0
     @velocity[0] = 0
     @velocity[1] = 0
 
