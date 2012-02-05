@@ -36,7 +36,7 @@ class window.Component
     if input.space
       # shoot missle
       missile = new Missile()
-      missile.move(@x,@y).rotate(@orientation).thrust(5)
+      missile.move(@x+@sprite.width/2-(missile.sprite.width/2),@y).rotate(@orientation).thrust(5)
 
       graphics.ordered.push(missile)
 
