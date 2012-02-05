@@ -12,13 +12,10 @@ window.Input =
     40: 'down'
 
   run: ->
-    $(document).bind 'keyup', (e) ->
+    $(document.body).keyup (e) ->
       code = Input.humanize[e.keyCode]
       Input.state[code] = false
 
-      Component.all.mark.respondToInput(Input.state)
-
-    $(document).bind 'keydown', (e) ->
+    $(document.body).keydown (e) ->
       code = Input.humanize[e.keyCode]
       Input.state[code] = true
-      Component.all.mark.respondToInput(Input.state)
