@@ -3,11 +3,11 @@ class window.Component
     @sprite = @sprite
     @x = @options.x || 0
     @y = @options.y || 0
-    @velocity = @options.v || [0, 0]
-    @orientation = @options.r || -(Math.PI)/2.0 # face your ass downwards
-    @max_speed = @options.max_speed || 10
+    @velocity     = @options.v || [0, 0]
+    @orientation  = @options.r || -(Math.PI)/2.0 # face your ass downwards
+    @max_speed    = @options.max_speed || 10
     @thrust_force = @options.thrust_force || 0.4
-    @turn_rate = @options.turn_rate || Math.PI/20 # 20 key presses, positions
+    @turn_rate    = @options.turn_rate || Math.PI/20 # 20 key presses, positions
 
     # non-radial component control
     @dx = @options.dx || 0
