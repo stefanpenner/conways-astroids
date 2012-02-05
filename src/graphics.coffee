@@ -11,7 +11,10 @@ class window.Graphics
     @
 
   run: ->
-    parent = arguments.callee
-    webkitRequestAnimationFrame ->
-      graphics.draw()
-      parent()
+    graphics.draw()
+
+    requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+    if requestAnimationFrame
+      requestAnimationFrame arguments.callee
+    else
+      setTimeout(arguments.callee,40)
