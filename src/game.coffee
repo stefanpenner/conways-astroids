@@ -19,29 +19,21 @@ $ ->
     Sprite.find.space
     Component.all.mark
     new Asteroid({
-      dx: 5
-      dy: 2
       x: 300
       y: 100
       bounce: true
     })
     new Asteroid({
-      dx: 0
-      dy: 5
       x: 100
       y: 300
       bounce: true
     })
     new Asteroid({
-      dx: -10
-      dy: 2
       x: 3
       y: 100
       bounce: true
     })
     new Asteroid({
-      dx: -1
-      dy: 2
       x: 800
       y: 100
       bounce: true
