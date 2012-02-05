@@ -5,4 +5,8 @@ class Ship extends Component
       y: 100
       radial: true
     )
-Ship.sprite = new Sprite('Mark','assets/mark.jpg')
+
+Ship.sprite = new Sprite('Ship','assets/ship.png',
+  height: 50
+  width:  50
+)
