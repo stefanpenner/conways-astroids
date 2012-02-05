@@ -14,13 +14,11 @@ window.Input =
 
   run: ->
     $(document).keyup (e) ->
+      e.preventDefault()
       code = Input.humanize[e.keyCode]
       Input.state[code] = false
-      e.preventDefault()
-      return false
 
     $(document).keydown (e) ->
+      e.preventDefault()
       code = Input.humanize[e.keyCode]
       Input.state[code] = true
-      e.preventDefault()
-      return false
