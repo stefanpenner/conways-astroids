@@ -7,6 +7,7 @@ class window.Component
     @orientation = @options.r || 0
     @heading = @options.heading || 0
     @max_v = @options.max_v || 5
+    @mass = @options.force || 1
 
     @dx = @options.dx || 0
     @dy = @options.dy || 0
