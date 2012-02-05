@@ -33,11 +33,15 @@ class window.Component
       @dy +=  0.4 if input.up
       @dx +=  0.4 if input.right
 
+    # shoot missile
     if input.space
-      # shoot missle
       missile = new Missile()
-      missile.move(@x+@sprite.width/2-(missile.sprite.width/2),@y).rotate(@orientation).thrust(5)
-
+      # adjust center to be center of missile sprite on the player sprite -- TWO centers!
+      center = [@x+@sprite.width/2-missile.sprite.width/2, @y+@sprite.height/2-missile.sprite.height/2]
+      radius = @sprite.height/2
+      x = Math.sin(-@orientation+Math.PI/2) * radius + center[0]
+      y = Math.cos(-@orientation+Math.PI/2) * radius + center[1]
+      missile.move(x, y).rotate(@orientation).thrust(5)
       graphics.ordered.push(missile)
 
     if input.r
@@ -49,6 +53,7 @@ class window.Component
   thrust: (force) ->
     if @speed() > @max_speed
       # WARP DRIVE, ENGAGE
+      # also, this breaks if you're going backwards
       @velocity[0] += @max_speed * Math.cos(@orientation)
       @velocity[1] += @max_speed * Math.sin(@orientation)
     else
