@@ -4,7 +4,8 @@ class window.Sprite
     @loaded = false
     @x = @options.x || 0
     @y = @options.y || 0
-    Sprite.all[@name] = @
+    Sprite.find[@name] = @
+    Sprite.all.push(@)
 
   preload: ->
     @image.load( =>
@@ -40,4 +41,6 @@ class window.Sprite
     else
       ctx.drawImage(@image[0], @x, @y, @width, @height)
     @
-Sprite.all = {}
+
+Sprite.all = []
+Sprite.find = {}

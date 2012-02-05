@@ -1,4 +1,4 @@
 window.Logic =
   run: ->
-    Componant.all[key].tick() for key of Componant.all
+    component.tick() for component in Component.all
     setTimeout(arguments.callee,30)
