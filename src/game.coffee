@@ -19,8 +19,6 @@ $ ->
     Sprite.find.space
     Component.all.mark
     new Asteroid()
-    new Asteroid()
-    new Asteroid()
     new Missile()
   ]
 
