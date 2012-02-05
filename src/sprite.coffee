@@ -34,7 +34,7 @@ class window.Sprite
       pivotY = @y + (@height/2)
       ctx.save()
       ctx.translate(pivotX, pivotY)
-      ctx.rotate((@r)*3.14)
+      ctx.rotate(@r)
       ctx.drawImage(@image[0], -(@width/2), -(@height/2), @width, @height)
       ctx.translate(-pivotX, -pivotY)
       ctx.restore()

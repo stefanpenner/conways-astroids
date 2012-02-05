@@ -10,6 +10,7 @@ window.Input =
     38: 'up'
     39: 'right'
     40: 'down'
+    82: 'r'
 
   run: ->
     $(document.body).keyup (e) ->
@@ -20,6 +21,7 @@ window.Input =
       return false
 
     $(document.body).keydown (e) ->
+      e.preventDefault
       code = Input.humanize[e.keyCode]
       Input.state[code] = true
       e.preventDefault()

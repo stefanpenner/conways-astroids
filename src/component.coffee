@@ -3,29 +3,29 @@ class window.Component
     @sprite = @sprite
     @x = @options.x || 0
     @y = @options.y || 0
-    @v = @options.v || 0
-    @orientation = @options.r || 0
-    @heading = @options.heading || 0
-    @max_v = @options.max_v || 5
-    @mass = @options.force || 1
-    @acceleration = @options.force || 0.4
+    @velocity = @options.v || [0, 0]
+    @orientation = @options.r || -(Math.PI)/2.0 # face your ass downwards
+    @max_speed = @options.max_speed || 10
+    @thrust_force = @options.thrust_force || 0.4
+    @turn_rate = @options.turn_rate || Math.PI/20 # 20 key presses, positions
 
+    # non-radial component control
     @dx = @options.dx || 0
     @dy = @options.dy || 0
 
     Component.all.push @
 
+  speed: -> Math.sqrt(Math.pow(@velocity[0], 2) + Math.pow(@velocity[1], 2))
+
   respondToInput: (input) ->
     @input = input
     if @options.radial
-      @v += -0.4 if input.up and @v >= -@max_v
-      @v +=  0.4 if input.down and @v <= @max_v
 
-      @orientation += -0.02 if input.left
-      @orientation +=  0.02 if input.right
+      @thrust(@thrust_force) if input.up
+      @thrust(-@thrust_force) if input.down
 
-      if input.up or input.down
-        @heading = @orientation
+      @orientation += -@turn_rate if input.left
+      @orientation +=  @turn_rate if input.right
 
     else
       @dx += -0.4 if input.left
@@ -36,9 +36,24 @@ class window.Component
     if input.space
       # shoot missle
       missile = new Missile()
-      missile.move(@x,@y).rotate(@orientation-1).v=5
+      missile.move(@x,@y).rotate(@orientation).thrust(5)
 
       graphics.ordered.push(missile)
+
+    if input.r
+      # debug reset to center
+      @x = 450
+      @y = 250
+      @stop()
+
+  thrust: (force) ->
+    if @speed() > @max_speed
+      # WARP DRIVE, ENGAGE
+      @velocity[0] += @max_speed * Math.cos(@orientation)
+      @velocity[1] += @max_speed * Math.sin(@orientation)
+    else
+      @velocity[0] += force * Math.cos(@orientation)
+      @velocity[1] += force * Math.sin(@orientation)
 
   height: -> @options.height || @sprite.height
   width:  -> @options.width  || @sprite.width
@@ -53,41 +68,42 @@ class window.Component
       @delta = 0
 
     if @options.radial
-      @x += @v * Math.cos((@heading+(1/2))*3.14)
-      @y += @v * Math.sin((@heading+(1/2))*3.14)
+      @x += @velocity[0]
+      @y += @velocity[1]
 
     else
       @x += @dx
       @y += @dy
 
-    #right
+    #in bounds stuff
+    #right wall
     if @x > 900 - width
       @dx = @dx * @delta
       @x = 900 - width
-      @v = 0
+      @stop()
 
-    #left
+    #left wall
     if @x < 0
       @dx = @dx * @delta
       @x = 0
-      @v = 0
+      @stop()
 
-    #bottom
+    #bottom wall
     if @y > 500 - height
       @dy = @dy * @delta
       @y = 500 - height
-      @v = 0
+      @stop()
 
-    #top
+    #top wall
     if @y < 0
       @dy = @dy * @delta
       @y = 0
-      @v = 0
+      @stop()
 
   draw: (@ctx) ->
     @sprite.
       place(@x,@y).
-      rotate(@orientation).
+      rotate(@orientation+Math.PI/2).
       resize(@height(),@width()).
         draw(@ctx)
     @
@@ -95,5 +111,9 @@ class window.Component
   rotate: (@orientation) -> @
   move: (@x,@y) -> @
   resize: (@height,@width) ->
+  stop: ->
+    @v = 0
+    @velocity[0] = 0
+    @velocity[1] = 0
 
 Component.all = []
