@@ -10,4 +10,4 @@ window.Resources =
       count += 1
       callback() if count is expected
 
-    sprites[key].preload() for key of sprites
+    sprite.preload() for key, sprite of sprites

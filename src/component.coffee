@@ -24,7 +24,6 @@ class window.Component
       if input.up or input.down
         @heading = @orientation
 
-
     else
       @dx += -0.4 if input.left
       @dy += -0.4 if input.down
