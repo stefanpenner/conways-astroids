@@ -6,6 +6,7 @@ class window.Component
     @v = @options.v || 0
     @orientation = @options.r || 0
     @heading = @options.heading || 0
+    @max_v = @options.max_v || 5
 
     @dx = @options.dx || 0
     @dy = @options.dy || 0
@@ -15,8 +16,8 @@ class window.Component
   respondToInput: (input) ->
     @input = input
     if @options.radial
-      @v += -0.4 if input.up
-      @v +=  0.4 if input.down
+      @v += -0.4 if input.up and @v >= -@max_v
+      @v +=  0.4 if input.down and @v <= @max_v
 
       @orientation += -0.02 if input.left
       @orientation +=  0.02 if input.right
