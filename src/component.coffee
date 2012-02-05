@@ -8,6 +8,7 @@ class window.Component
     @heading = @options.heading || 0
     @max_v = @options.max_v || 5
     @mass = @options.force || 1
+    @acceleration = @options.force || 0.4
 
     @dx = @options.dx || 0
     @dy = @options.dy || 0
