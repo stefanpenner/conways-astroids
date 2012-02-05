@@ -4,7 +4,8 @@ class window.Component
     @x = @options.x || 0
     @y = @options.y || 0
     @v = @options.v || 0
-    @r = @options.r || 0
+    @orientation = @options.r || 0
+    @heading = @options.heading || 0
 
     @dx = @options.dx || 0
     @dy = @options.dy || 0
@@ -12,13 +13,17 @@ class window.Component
     Component.all.push @
 
   respondToInput: (input) ->
-
+    @input = input
     if @options.radial
       @v += -0.4 if input.up
       @v +=  0.4 if input.down
 
-      @r += -0.02 if input.left
-      @r +=  0.02 if input.right
+      @orientation += -0.02 if input.left
+      @orientation +=  0.02 if input.right
+
+      if input.up or input.down
+        @heading = @orientation
+
 
     else
       @dx += -0.4 if input.left
@@ -29,11 +34,9 @@ class window.Component
     if input.space
       # shoot missle
       missile = new Missile()
-      missile.move(@x,@y).rotate(@r-1).v=5
+      missile.move(@x,@y).rotate(@orientation-1).v=5
 
       graphics.ordered.push(missile)
-
-    input.reset()
 
   height: -> @options.height || @sprite.height
   width:  -> @options.width  || @sprite.width
@@ -48,8 +51,9 @@ class window.Component
       @delta = 0
 
     if @options.radial
-      @x += @v * Math.cos((@r+(1/2))*3.14)
-      @y += @v * Math.sin((@r+(1/2))*3.14)
+      @x += @v * Math.cos((@heading+(1/2))*3.14)
+      @y += @v * Math.sin((@heading+(1/2))*3.14)
+
     else
       @x += @dx
       @y += @dy
@@ -78,16 +82,15 @@ class window.Component
       @y = 0
       @v = 0
 
-
   draw: (@ctx) ->
     @sprite.
       place(@x,@y).
-      rotate(@r).
+      rotate(@orientation).
       resize(@height(),@width()).
         draw(@ctx)
     @
 
-  rotate: (@r) -> @
+  rotate: (@orientation) -> @
   move: (@x,@y) -> @
   resize: (@height,@width) ->
 
