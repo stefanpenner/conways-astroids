@@ -5,8 +5,8 @@ class window.Component
     @x = @options.x || 0
     @y = @options.y || 0
 
-    @velocity     = @options.velocity     || [0, 0]
-    @orientation  = @options.orientation  || -(Math.PI)/2.0 # face your ass downwards
+    @velocity    = @options.velocity    || [0, 0]
+    @orientation = @options.orientation || -(Math.PI)/2.0 # face your ass downwards
     @maxSpeed    = @options.maxSpeed    || 10
     @thrustForce = @options.thrustForce || 0.4
     @turnRate    = @options.turnRate    || Math.PI/20 # 20 key presses, positions
