@@ -2,7 +2,7 @@ task :default => :compile
 
 desc 'compile all coffee files in the root directory to the output directory and continue to watch'
 task :compile do
-  system %(coffee -o output -cwj all.js src/*.coffee src/compents/*.coffee)
+  system %(coffee -o output -cwj all.js src/*.coffee src/components/*.coffee)
 end
 
 desc 'install coffee-script with brew (Mac OS X)'
