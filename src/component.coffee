@@ -56,7 +56,7 @@ class window.Component
     @sprite.
       place(@x,@y).
       rotate(@orientation+Math.PI/2).
-      resize(@actualHeight(),@actualWidth()).
+      resize(@getHeight(),@getWidth()).
         draw(@ctx)
     @
   rotate: (@orientation) -> @
