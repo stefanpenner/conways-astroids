@@ -1,10 +1,11 @@
 class Ship extends RadialComponent
-  constructor: ->
-    super(
+  constructor: (options={}) ->
+    defaults =
       x: 300
       y: 300
       radial: true
-    )
+
+    super $.extend(true,defaults,options)
 
   respondToInput: (input) ->
     if input.space
@@ -17,7 +18,7 @@ class Ship extends RadialComponent
       missile.move(x, y).rotate(@orientation).thrust(5)
       graphics.ordered.push(missile)
 
-    super(input)
+    super input
 
 Ship.sprite = new Sprite('Ship','assets/ship.png',
   height: 50
