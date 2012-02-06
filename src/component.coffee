@@ -107,8 +107,6 @@ class window.Component
   rotate: (@orientation) -> @
   move: (@x,@y) -> @
   resize: (@height,@width) ->
-  stop: ->
-    @velocity[0] = 0
-    @velocity[1] = 0
+  stop: -> @velocity[0] = @velocity[1] = 0
 
 Component.all = []
