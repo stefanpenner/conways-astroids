@@ -1,17 +1,16 @@
 class window.Component
-  constructor: (@options={}) ->
-    @sprite = @constructor.sprite || @options.sprite
+  constructor: (options={}) ->
+    defaults =
+      sprite: @constructor.sprite
+      x:      0
+      y:      0
+      dx:     0
+      dy:     0
+      bounce: 0
+      maxSpeed: 10
+      orientation: -(Math.PI)/2.0
 
-    @x = @options.x || 0
-    @y = @options.y || 0
-
-    @dx = @options.dx || 0
-    @dy = @options.dy || 0
-
-    @bounce = @options.bounce || 0
-
-    @maxSpeed    = @options.maxSpeed    || 10
-    @orientation = @options.orientation || -(Math.PI)/2.0 # face your ass downwards
+    $.extend(true,this,defaults,options)
 
     Component.all.push @
 
@@ -23,12 +22,12 @@ class window.Component
     @dy +=  0.4 if input.up
     @dx +=  0.4 if input.right
 
-  height: -> @options.height || @sprite.height
-  width:  -> @options.width  || @sprite.width
+  actualHeight: -> @height or @sprite.height
+  actualWidth:  -> @width  or @sprite.width
 
   tick: ->
-    height = @height()
-    width  = @width()
+    height = @actualHeight()
+    width  = @actualWidth()
 
     @x += @dx
     @y += @dy
@@ -57,10 +56,9 @@ class window.Component
     @sprite.
       place(@x,@y).
       rotate(@orientation+Math.PI/2).
-      resize(@height(),@width()).
+      resize(@actualHeight(),@actualWidth()).
         draw(@ctx)
     @
-
   rotate: (@orientation) -> @
   move: (@x,@y) -> @
   resize: (@height,@width) ->

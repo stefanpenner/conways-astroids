@@ -21,23 +21,21 @@ $ ->
     new Asteroid({
       x: 300
       y: 100
-      bounce: true
     })
+
     new Asteroid({
       x: 100
       y: 300
-      bounce: true
     })
 
     new Asteroid({
       x: 3
       y: 100
-      bounce: true
     })
+
     new Asteroid({
       x: 800
       y: 100
-      bounce: true
     })
   ]
 
@@ -47,7 +45,6 @@ $ ->
       y:420
       dx:10
       dy:-10
-      bounce: true
     }))
   Resources.ready ->
     Runtime.run()

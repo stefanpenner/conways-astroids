@@ -1,11 +1,10 @@
 class Asteroid extends Component
   constructor: (options={})->
-    # random direction by default
-    options.dx ?= Math.random() * 10 - 5
-    options.dy ?= Math.random() * 10 - 5
-    options.bounce = -1
-
-    super(options)
+    super($.extend(true,{
+      dx: Math.random() * 10 - 5
+      dy: Math.random() * 10 -5
+      bounce: -1
+    },options))
 
 Asteroid.sprite = new Sprite('asteroid','assets/asteroid.png',
   height: 42.8
