@@ -1,6 +1,6 @@
 class window.Component
-  constructor: (@sprite,@options={}) ->
-    @sprite = @sprite
+  constructor: (@options={}) ->
+    @sprite = @constructor.sprite || @options.sprite
     @x = @options.x || 0
     @y = @options.y || 0
     @velocity     = @options.v || [0, 0]

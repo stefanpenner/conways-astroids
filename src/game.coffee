@@ -28,6 +28,7 @@ $ ->
       y: 300
       bounce: true
     })
+
     new Asteroid({
       x: 3
       y: 100
@@ -39,14 +40,15 @@ $ ->
       bounce: true
     })
   ]
+
   $('#robot').click ->
-    graphics.ordered.push(new Asteroid(
+    graphics.ordered.push(new Asteroid({
       x:10
       y:420
       dx:10
       dy:-10
       bounce: true
-    ))
+    }))
   Resources.ready ->
     Runtime.run()
     graphics.run()

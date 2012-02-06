@@ -1,6 +1,6 @@
 class Ship extends Component
   constructor: ->
-    super(Ship.sprite,
+    super(
       x: 300
       y: 300
       radial: true

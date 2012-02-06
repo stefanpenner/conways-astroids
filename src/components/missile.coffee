@@ -1,6 +1,6 @@
 class Missile extends Component
   constructor: ->
-    super(Missile.sprite,
+    super(
       dx: 3
       dy: 2
       x: 500
