@@ -22,12 +22,12 @@ class window.Component
     @dy +=  0.4 if input.up
     @dx +=  0.4 if input.right
 
-  actualHeight: -> @height or @sprite.height
-  actualWidth:  -> @width  or @sprite.width
+  getHeight: -> @height or @sprite.height
+  getWidth:  -> @width  or @sprite.width
 
   tick: ->
-    height = @actualHeight()
-    width  = @actualWidth()
+    height = @getHeight()
+    width  = @getWidth()
 
     @x += @dx
     @y += @dy
