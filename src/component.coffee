@@ -84,6 +84,8 @@ class window.RadialComponent extends Component
       @dx += force * Math.cos(@orientation)
       @dy += force * Math.sin(@orientation)
 
+    @
+
   respondToInput: (input) ->
     @thrust(@thrustForce)  if input.up
     @thrust(-@thrustForce) if input.down

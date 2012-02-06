@@ -16,17 +16,23 @@ class Ship extends RadialComponent
       centerY = @y + @sprite.height / 2 - missile.sprite.height / 2
 
       radius = @sprite.height/2
+
       theta  = -@orientation + Math.PI/2
 
-      x = Math.sin(theta) * radius + centerX
-      y = Math.cos(theta) * radius + centerY
+      sinTheta = Math.sin(theta)
+      cosTheta = Math.cos(theta)
 
-      missile.move(x, y).rotate(@orientation).thrust(5)
+      x = sinTheta * radius + centerX
+      y = cosTheta * radius + centerY
+
+      missile.move(x, y)
+
+      missile.dx = sinTheta * 5
+      missile.dy = cosTheta * 5
 
       graphics.ordered.push(missile)
 
     super input
-
 Ship.sprite = new Sprite('Ship','assets/ship.png',
   height: 50
   width:  50
