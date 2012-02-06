@@ -1,4 +1,4 @@
-class Ship extends Component
+class Ship extends RadialComponent
   constructor: ->
     super(
       x: 300
