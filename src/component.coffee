@@ -7,9 +7,9 @@ class window.Component
 
     @velocity     = @options.velocity     || [0, 0]
     @orientation  = @options.orientation  || -(Math.PI)/2.0 # face your ass downwards
-    @max_speed    = @options.max_speed    || 10
-    @thrust_force = @options.thrust_force || 0.4
-    @turn_rate    = @options.turn_rate    || Math.PI/20 # 20 key presses, positions
+    @maxSpeed    = @options.maxSpeed    || 10
+    @thrustForce = @options.thrustForce || 0.4
+    @turnRate    = @options.turnRate    || Math.PI/20 # 20 key presses, positions
 
     # non-radial component control
     @dx = @options.dx || 0
@@ -23,11 +23,11 @@ class window.Component
     @input = input
     if @options.radial
 
-      @thrust(@thrust_force)  if input.up
-      @thrust(-@thrust_force) if input.down
+      @thrust(@thrustForce)  if input.up
+      @thrust(-@thrustForce) if input.down
 
-      @orientation += -@turn_rate if input.left
-      @orientation +=  @turn_rate if input.right
+      @orientation += -@turnRate if input.left
+      @orientation +=  @turnRate if input.right
 
     else
       @dx += -0.4 if input.left
@@ -43,11 +43,11 @@ class window.Component
       @stop()
 
   thrust: (force) ->
-    if @speed() > @max_speed
+    if @speed() > @maxSpeed
       # WARP DRIVE, ENGAGE
       # also, this breaks if you're going backwards
-      @velocity[0] += @max_speed * Math.cos(@orientation)
-      @velocity[1] += @max_speed * Math.sin(@orientation)
+      @velocity[0] += @maxSpeed * Math.cos(@orientation)
+      @velocity[1] += @maxSpeed * Math.sin(@orientation)
     else
       @velocity[0] += force * Math.cos(@orientation)
       @velocity[1] += force * Math.sin(@orientation)
