@@ -34,16 +34,6 @@ class window.Component
       @dx +=  0.4 if input.right
 
     # shoot missile
-    if input.space
-      missile = new Missile()
-      # adjust center to be center of missile sprite on the player sprite -- TWO centers!
-      center = [@x+@sprite.width/2-missile.sprite.width/2, @y+@sprite.height/2-missile.sprite.height/2]
-      radius = @sprite.height/2
-      x = Math.sin(-@orientation+Math.PI/2) * radius + center[0]
-      y = Math.cos(-@orientation+Math.PI/2) * radius + center[1]
-      missile.move(x, y).rotate(@orientation).thrust(5)
-      graphics.ordered.push(missile)
-
     if input.r
       # debug reset to center
       @x = 450
