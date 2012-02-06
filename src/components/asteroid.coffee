@@ -3,7 +3,7 @@ class Asteroid extends Component
     defaults =
       dx: Math.random() * 10 - 5
       dy: Math.random() * 10 -5
-      bounce: -1
+      bounce: true
 
     super $.extend(true,defaults,options)
 

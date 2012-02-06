@@ -6,7 +6,8 @@ class window.Component
       y:      0
       dx:     0
       dy:     0
-      bounce: 0
+      bounce: true
+      bounceRate: -1
       maxSpeed: 10
       orientation: -(Math.PI)/2.0
 
@@ -33,23 +34,24 @@ class window.Component
     @y += @dy
 
     #right wall
+
     if @x > 900 - width
-      @dx = @dx * @bounce
+      @dx = @dx * @bounceRate if @bounce
       @x = 900 - width
 
     #left wall
     if @x < 0
-      @dx = @dx * @bounce
+      @dx = @dx * @bounceRate if @bounce
       @x = 0
 
     #bottom wall
     if @y > 500 - height
-      @dy = @dy * @bounce
+      @dy = @dy * @bounceRate if @bounce
       @y = 500 - height
 
     #top wall
     if @y < 0
-      @dy = @dy * @bounce
+      @dy = @dy * @bounceRate if @bounce
       @y = 0
 
   draw: (@ctx) ->

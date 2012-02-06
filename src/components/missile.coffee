@@ -4,7 +4,7 @@ class Missile extends RadialComponent
       dx: 3
       dy: 2
       x: 500
-      bounce: -1
+      bounce: true
 
     super $.extend(true,defaults,options)
 
