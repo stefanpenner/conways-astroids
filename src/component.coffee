@@ -1,13 +1,15 @@
 class window.Component
   constructor: (@options={}) ->
     @sprite = @constructor.sprite || @options.sprite
+
     @x = @options.x || 0
     @y = @options.y || 0
-    @velocity     = @options.v || [0, 0]
-    @orientation  = @options.r || -(Math.PI)/2.0 # face your ass downwards
-    @max_speed    = @options.max_speed || 10
+
+    @velocity     = @options.velocity     || [0, 0]
+    @orientation  = @options.orientation  || -(Math.PI)/2.0 # face your ass downwards
+    @max_speed    = @options.max_speed    || 10
     @thrust_force = @options.thrust_force || 0.4
-    @turn_rate    = @options.turn_rate || Math.PI/20 # 20 key presses, positions
+    @turn_rate    = @options.turn_rate    || Math.PI/20 # 20 key presses, positions
 
     # non-radial component control
     @dx = @options.dx || 0
@@ -21,7 +23,7 @@ class window.Component
     @input = input
     if @options.radial
 
-      @thrust(@thrust_force) if input.up
+      @thrust(@thrust_force)  if input.up
       @thrust(-@thrust_force) if input.down
 
       @orientation += -@turn_rate if input.left
@@ -34,7 +36,7 @@ class window.Component
       @dx +=  0.4 if input.right
 
     # shoot missile
-    if input.r
+    if input.orientation
       # debug reset to center
       @x = 450
       @y = 250
@@ -57,20 +59,19 @@ class window.Component
     height = @height()
     width  = @width()
 
-    if @options.bounce
-      @delta = -1
-    else
-      @delta = 0
-
     if @options.radial
       @x += @velocity[0]
       @y += @velocity[1]
-
     else
       @x += @dx
       @y += @dy
 
     #in bounds stuff
+    if @options.bounce
+      @delta = -1
+    else
+      @delta = 0
+
     #right wall
     if @x > 900 - width
       @dx = @dx * @delta
