@@ -12,7 +12,7 @@ class window.Sprite
       image = @image[0]
       @height = @options.height || image.height
       @width  = @options.width  || image.width
-      $('html').trigger('imageload', @name)
+      $('html').trigger('sprite.loaded', @name)
       @loaded = true
     ).attr('src',@src)
 

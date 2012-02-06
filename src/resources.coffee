@@ -6,7 +6,7 @@ window.Resources =
     sprites = Sprite.all
     count = 0
     expected = Object.keys(sprites).length
-    $('html').bind 'imageload', =>
+    $('html').bind 'sprite.loaded', =>
       count += 1
       callback() if count is expected
 
